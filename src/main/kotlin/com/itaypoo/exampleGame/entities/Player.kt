@@ -2,17 +2,23 @@ package com.itaypoo.exampleGame.entities
 
 import com.itaypoo.exampleGame.GameManager
 import com.itaypoo.esgl.*
-import com.raylib.Raylib.DrawCircleV
 
 class Player : Drawable {
-    val sprite = Sprite("resources/bunny.png")
-    var position = Vector2(GameManager.gameSize.x / 2, GameManager.gameSize.y / 2)
-    private var velocity = Vector2(0f, 0f)
-    var distanceFromMouse = 0f
-    var ballRadius = 30
+    val sprite = Sprite(
+        "resources/widebunny.png",
+        pivotMode = PivotMode.NORMALIZED,
+        pivotPoint = Vector2(0.5f, 0.5f),
+    )
+    val position = Vector2(GameManager.gameSize.x / 2, GameManager.gameSize.y / 2)
+    private val circleColor = Color(255, 0, 0, 100)
+    private val inputVec = Vector2(0, 0)
+    private val velocity = Vector2(0, 0)
+    private val scaledVelocity = Vector2(0, 0)
+    private val acceleration = 10f
+    private val ballRadius = 30f
 
     companion object {
-        const val BASE_RUN_SPEED = 500
+        const val BASE_RUN_SPEED = 1000
     }
 
     override fun load() {
@@ -24,35 +30,28 @@ class Player : Drawable {
     }
 
     override fun update(deltaTime: Float, window: Window) {
-        val inputVec = Vector2(0, 0)
+        inputVec.set(0, 0)
         if (Input.isKeyHeld(Key.W)) inputVec.y = -1f
         if (Input.isKeyHeld(Key.A)) inputVec.x = -1f
         if (Input.isKeyHeld(Key.S)) inputVec.y = 1f
         if (Input.isKeyHeld(Key.D)) inputVec.x = 1f
 
-        val targetVelocity = inputVec.normalized * BASE_RUN_SPEED
+        inputVec.normalize()
+        inputVec *= BASE_RUN_SPEED
 
         // Smoothly move velocity towards target velocity
-        val acceleration = 10f // tweak this for more/less smoothness
-        velocity.x += (targetVelocity.x - velocity.x) * acceleration * deltaTime
-        velocity.y += (targetVelocity.y - velocity.y) * acceleration * deltaTime
+        velocity.x += (inputVec.x - velocity.x) * acceleration * deltaTime
+        velocity.y += (inputVec.y - velocity.y) * acceleration * deltaTime
 
-        position += velocity * deltaTime
+        scaledVelocity.set(velocity)
+        scaledVelocity *= deltaTime
+        position += scaledVelocity
 
-        distanceFromMouse = Input.mousePosition.distanceTo(position)
-        if (distanceFromMouse < ballRadius) {
-            Input.mouseCursor = MouseCursor.POINTING_HAND
-            if (Input.isMouseButtonPressed(MouseButton.LEFT)) {
-                ballRadius += 5
-            }
-        } else Input.mouseCursor = MouseCursor.DEFAULT
-
-        sprite.position = position
+        sprite.position.set(position)
     }
 
-    override fun draw() {
-        DrawCircleV(position.toRayVec(), ballRadius.toFloat(), Color(255, 0, 0, 100).toRayColor())
-        sprite.draw()
+    override fun draw(window: Window) {
+        sprite.draw(window)
     }
 
 }

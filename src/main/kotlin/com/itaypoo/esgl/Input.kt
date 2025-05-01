@@ -3,8 +3,17 @@ package com.itaypoo.esgl
 import com.raylib.Raylib
 
 object Input {
-    val mousePosition: Vector2
-        get() = Vector2.fromRayVec(Raylib.GetMousePosition())
+    val mousePosition: Vector2 = Vector2(0, 0)
+        get() {
+            field.set(Raylib.GetMousePosition())
+            return field
+        }
+    val mouseWheelDelta: Vector2 = Vector2(0, 0)
+        get() {
+            field.set(Raylib.GetMouseWheelMoveV())
+            return field
+        }
+
 
     var mouseCursor = MouseCursor.DEFAULT
         set(value) {

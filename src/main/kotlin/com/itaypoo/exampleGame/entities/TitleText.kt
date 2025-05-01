@@ -12,8 +12,8 @@ class TitleText: Drawable {
 
     override fun update(deltaTime: Float, window: Window) {}
 
-    override fun draw() {
-        Raylib.DrawText("Turtle Fucker", 100, 100, 50, Color.WHITE.toRayColor())
-        Raylib.DrawText("Press [Space] to start", 100, 150, 20, Color.WHITE.toRayColor())
+    override fun draw(window: Window) {
+        Raylib.DrawText("Turtle Fucker", 100, 100, 50, Color.WHITE.rayColor)
+        Raylib.DrawText("Press [Space] to start", 100, 150, 20, Color.WHITE.rayColor)
     }
 }

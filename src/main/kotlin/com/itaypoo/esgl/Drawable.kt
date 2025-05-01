@@ -4,5 +4,5 @@ interface Drawable {
     fun load()
     fun unload()
     fun update(deltaTime: Float, window: Window)
-    fun draw()
+    fun draw(window: Window)
 }
