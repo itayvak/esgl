@@ -2,6 +2,8 @@ package com.itaypoo.exampleGame
 
 import com.itaypoo.esgl.*
 import com.itaypoo.exampleGame.scenes.BunnyFieldScene
+import com.itaypoo.exampleGame.scenes.MainMenuScene
+import com.itaypoo.exampleGame.scenes.SimpleMovementScene
 
 interface Scene : Drawable {
     val camera: Camera
@@ -16,6 +18,7 @@ object GameManager {
         targetFPS = 60,
         isResizable = true,
         enableVSync = true,
+        displayFPS = true,
         fullscreenToggleKey = Key.F11,
         quitKey = Key.ESCAPE,
         initialSize = gameSize,
@@ -24,7 +27,7 @@ object GameManager {
 
     init {
         window.init()
-        switchScene(BunnyFieldScene())
+        switchScene(MainMenuScene())
     }
 
     fun switchScene(newScene: Scene) {

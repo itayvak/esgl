@@ -6,19 +6,18 @@ import com.itaypoo.esgl.*
 class Player : Drawable {
     val sprite = Sprite(
         "resources/widebunny.png",
-        pivotMode = PivotMode.NORMALIZED,
+        pivotMode = Sprite.PivotMode.NORMALIZED,
         pivotPoint = Vector2(0.5f, 0.5f),
     )
     val position = Vector2(GameManager.gameSize.x / 2, GameManager.gameSize.y / 2)
-    private val circleColor = Color(255, 0, 0, 100)
     private val inputVec = Vector2(0, 0)
     private val velocity = Vector2(0, 0)
     private val scaledVelocity = Vector2(0, 0)
     private val acceleration = 10f
-    private val ballRadius = 30f
 
     companion object {
         const val BASE_RUN_SPEED = 1000
+        const val CRAWL_SPEED = 100
     }
 
     override fun load() {
@@ -37,15 +36,21 @@ class Player : Drawable {
         if (Input.isKeyHeld(Key.D)) inputVec.x = 1f
 
         inputVec.normalize()
-        inputVec *= BASE_RUN_SPEED
 
-        // Smoothly move velocity towards target velocity
-        velocity.x += (inputVec.x - velocity.x) * acceleration * deltaTime
-        velocity.y += (inputVec.y - velocity.y) * acceleration * deltaTime
-
-        scaledVelocity.set(velocity)
-        scaledVelocity *= deltaTime
-        position += scaledVelocity
+        if(Input.isKeyHeld(Key.LEFT_SHIFT)) {
+            // crawl
+            scaledVelocity.set(inputVec)
+            scaledVelocity *= (CRAWL_SPEED * deltaTime)
+            position += scaledVelocity
+        } else {
+            inputVec *= BASE_RUN_SPEED
+            // Smoothly move velocity towards target velocity
+            velocity.x += (inputVec.x - velocity.x) * acceleration * deltaTime
+            velocity.y += (inputVec.y - velocity.y) * acceleration * deltaTime
+            scaledVelocity.set(velocity)
+            scaledVelocity *= deltaTime
+            position += scaledVelocity
+        }
 
         sprite.position.set(position)
     }

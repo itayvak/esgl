@@ -11,7 +11,7 @@ class CameraBoundsRenderer : Drawable {
     private var borderSize = BASE_BORDER_SIZE
 
     companion object {
-        const val BASE_BORDER_SIZE = 30f
+        const val BASE_BORDER_SIZE = 50f
     }
 
     override fun load() {}
@@ -22,7 +22,7 @@ class CameraBoundsRenderer : Drawable {
 
     override fun draw(window: Window) {
         if (window.camera == null) return
-        borderSize = BASE_BORDER_SIZE / window.camera!!.zoom
+        borderSize = BASE_BORDER_SIZE
         viewportSize.set(window.camera!!.worldViewPortBottomRight)
         viewportSize -= window.camera!!.worldViewportTopLeft
         viewportSize.x -= borderSize * 2

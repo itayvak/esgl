@@ -2,9 +2,6 @@ package com.itaypoo.esgl
 
 import com.raylib.Raylib
 
-enum class PivotMode {
-    NORMALIZED, PIXELS
-}
 
 class Sprite(
     val texturePath: String,
@@ -16,7 +13,12 @@ class Sprite(
 ) : Drawable {
     private lateinit var texture: Raylib.Texture
     private val drawPosition = Vector2(0, 0)
-    private var skipDraw = false
+    var isInCamera: Boolean = true
+        private set
+
+    enum class PivotMode {
+        NORMALIZED, PIXELS
+    }
 
     override fun load() {
         // if the texture is already loaded, use it.
@@ -46,6 +48,7 @@ class Sprite(
 
     override fun draw(window: Window) {
         if (!isTextureLoaded(texturePath)) throw IllegalStateException("Sprite drawn without being loaded. Use the load() function before drawing a sprite.")
+        // change the texture drawing position in according to the pivot point and mode
         drawPosition.set(position)
         if (pivotMode == PivotMode.NORMALIZED) {
             drawPosition.x -= texture.width() * pivotPoint.x
@@ -55,23 +58,39 @@ class Sprite(
             drawPosition.y -= pivotPoint.y
         }
 
-        skipDraw = false
-        if (
-            position.x < window.camera!!.worldViewportTopLeft.x - (texture.width() / 2) - VIEWPORT_CHECK_GRACE_PIXELS ||
-            position.x > window.camera!!.worldViewPortBottomRight.x + (texture.width() / 2) + VIEWPORT_CHECK_GRACE_PIXELS ||
-            position.y < window.camera!!.worldViewportTopLeft.y - (texture.height() / 2) - VIEWPORT_CHECK_GRACE_PIXELS ||
-            position.y > window.camera!!.worldViewPortBottomRight.y + (texture.height() / 2) + VIEWPORT_CHECK_GRACE_PIXELS
-        ) skipDraw = true
-        if (!skipDraw) Raylib.DrawTextureV(texture, drawPosition.rayVec, tint.rayColor)
+        // skip rendering texture if sprite is not in the camera view
+        isInCamera = true
+        if (window.camera == null) {
+            if (
+                drawPosition.x + texture.width() < -VIEWPORT_CHECK_GRACE_PIXELS ||  // left border
+                drawPosition.x > window.currentSize.x + VIEWPORT_CHECK_GRACE_PIXELS ||  // right border
+                drawPosition.y + texture.height() < -VIEWPORT_CHECK_GRACE_PIXELS ||  // top border
+                drawPosition.y > window.currentSize.y + VIEWPORT_CHECK_GRACE_PIXELS  // bottom border
+            ) {
+                isInCamera = false
+            }
+        } else {
+            if (
+                drawPosition.x + texture.width() < window.camera!!.worldViewportTopLeft.x - VIEWPORT_CHECK_GRACE_PIXELS || // left border
+                drawPosition.x > window.camera!!.worldViewPortBottomRight.x + VIEWPORT_CHECK_GRACE_PIXELS ||  // right border
+                drawPosition.y + texture.height() < window.camera!!.worldViewportTopLeft.y - VIEWPORT_CHECK_GRACE_PIXELS ||  // top border
+                drawPosition.y > window.camera!!.worldViewPortBottomRight.y + VIEWPORT_CHECK_GRACE_PIXELS  // bottom border
+            ) {
+                isInCamera = false
+            }
+        }
+        if (isInCamera) {
+            Raylib.DrawTextureV(texture, drawPosition.rayVec, tint.rayColor)
 
-        if (drawPivotPoint) {
-            Raylib.DrawCircleV(position.rayVec, 4f, Color.RED.rayColor)
-            Raylib.DrawRectangle(
-                position.x.toInt() - 10, position.y.toInt() - 1, 20, 2, Color.RED.rayColor
-            )
-            Raylib.DrawRectangle(
-                position.x.toInt() - 1, position.y.toInt() - 10, 2, 20, Color.RED.rayColor
-            )
+            if (drawPivotPoint) {
+                Raylib.DrawCircleV(position.rayVec, 4f, Color.RED.rayColor)
+                Raylib.DrawRectangle(
+                    position.x.toInt() - 10, position.y.toInt() - 1, 20, 2, Color.RED.rayColor
+                )
+                Raylib.DrawRectangle(
+                    position.x.toInt() - 1, position.y.toInt() - 10, 2, 20, Color.RED.rayColor
+                )
+            }
         }
     }
 
