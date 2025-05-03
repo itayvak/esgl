@@ -14,14 +14,13 @@ class Window(
     var camera: Camera? = null
 ) {
     // Abstracts Raylib window creation logic.
-
     val currentSize: Vector2 = Vector2(0, 0)
         get() {
             field.set(rl.GetScreenWidth(), rl.GetScreenHeight())
             return field
         }
 
-    fun init() {
+    init {
         if(isResizable) rl.SetConfigFlags(rl.FLAG_WINDOW_RESIZABLE)
         rl.InitWindow(initialSize.x.toInt(), initialSize.y.toInt(), title)
         if(enableVSync) rl.SetWindowState(rl.FLAG_VSYNC_HINT)

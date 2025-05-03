@@ -78,4 +78,9 @@ data class Vector2(
         x -= other.x
         y -= other.y
     }
+
+    fun min(min: Float) {
+        if(x < min) x = min
+        if(y < min) y = min
+    }
 }

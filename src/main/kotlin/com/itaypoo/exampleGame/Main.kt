@@ -4,6 +4,7 @@ import com.itaypoo.esgl.*
 import com.itaypoo.exampleGame.scenes.BunnyFieldScene
 import com.itaypoo.exampleGame.scenes.MainMenuScene
 import com.itaypoo.exampleGame.scenes.SimpleMovementScene
+import com.itaypoo.exampleGame.scenes.TextureTestScene
 
 interface Scene : Drawable {
     val camera: Camera
@@ -26,8 +27,7 @@ object GameManager {
     )
 
     init {
-        window.init()
-        switchScene(MainMenuScene())
+        switchScene(BunnyFieldScene())
     }
 
     fun switchScene(newScene: Scene) {

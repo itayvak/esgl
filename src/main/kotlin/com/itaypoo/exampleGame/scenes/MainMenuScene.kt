@@ -5,7 +5,7 @@ import com.itaypoo.exampleGame.entities.TitleText
 import com.itaypoo.esgl.*
 import com.itaypoo.exampleGame.Scene
 
-class MainMenuScene() : Scene {
+class MainMenuScene : Scene {
     override lateinit var camera: Camera
     private lateinit var titleText: TitleText
 

@@ -3,11 +3,13 @@ package com.itaypoo.exampleGame.entities
 import com.itaypoo.esgl.*
 import com.itaypoo.exampleGame.GameManager
 
-class FloorBackground : Drawable {
-    val sprites: MutableList<Sprite> = mutableListOf()
+class FloorBackground(
+    private val bunnyCount: Int
+) : Drawable {
+    private val sprites: MutableList<Sprite> = mutableListOf()
 
     override fun load() {
-        for (i in (0..500000)) {
+        for (i in (0..bunnyCount)) {
             sprites.add(Sprite("resources/bunny.png", position = Vector2(
                 (-GameManager.gameSize.x.toInt() * 4 .. GameManager.gameSize.x.toInt() * 8).random(),
                 (-GameManager.gameSize.y.toInt() * 4 .. GameManager.gameSize.y.toInt()* 8).random()
