@@ -5,7 +5,7 @@ import com.itaypoo.esgl.*
 
 class Player : Drawable {
     val sprite = Sprite(
-        "resources/widebunny.png",
+        "resources/pictures/widebunny.png",
         pivotMode = Sprite.PivotMode.NORMALIZED,
         pivotPoint = Vector2(0.5f, 0.5f),
     )

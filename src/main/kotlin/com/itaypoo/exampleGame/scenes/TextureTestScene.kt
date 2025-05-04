@@ -14,13 +14,24 @@ class TextureTestScene : Scene {
         "IJKL: Move pivot point",
         "ARROW KEYS: Change scale",
     )
+    private val testDisplays: MutableList<TextDisplay> = mutableListOf()
 
     override fun load() {
         camera = Camera()
         player = Player()
         player.load()
-
         player.sprite.pivotMode = Sprite.PivotMode.PIXELS
+
+        for (inst in instructions) {
+            testDisplays += TextDisplay(
+                text = inst,
+                position = Vector2(10, 30 + instructions.indexOf(inst) * 20),
+                size = 20f,
+                fontPath = "resources/fonts/Fredoka.ttf",
+                color = Color.WHITE
+            )
+            testDisplays.last().load()
+        }
 
         Debug.drawSpritesTextureBounds = true
         Debug.drawSpritesPositions = true
@@ -35,9 +46,6 @@ class TextureTestScene : Scene {
     }
 
     override fun draw(window: Window) {
-        for (inst in instructions) {
-            Raylib.DrawText(inst, 10, 30 + instructions.indexOf(inst) * 20, 20, Color.WHITE.rayColor)
-        }
         player.draw(window)
 
         if(Input.isKeyHeld(Key.I)) player.sprite.pivotPoint.y -= 1
@@ -49,5 +57,7 @@ class TextureTestScene : Scene {
         if(Input.isKeyHeld(Key.LEFT)) player.sprite.scale.x -= 0.1f
         if(Input.isKeyHeld(Key.DOWN)) player.sprite.scale.y -= 0.1f
         if(Input.isKeyHeld(Key.RIGHT)) player.sprite.scale.x += 0.1f
+
+        testDisplays.forEach { it.draw(window) }
     }
 }

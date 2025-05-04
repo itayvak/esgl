@@ -1,6 +1,20 @@
 package com.itaypoo.esgl
 import com.raylib.Raylib as rl
 
+/**
+ * Handle window management and the main game thread. Create a new window then start the game using
+ * the [run] method.
+ *
+ * @property title the title of the window.
+ * @property initialSize the initial size of the window. Can change if [isResizable] is true.
+ * @property isResizable whether the window can be resized by the user.
+ * @property enableVSync whether to enable VSync rendering.
+ * @property displayFPS maximum FPS the window will hit. Set this to `null` for no FPS cap.
+ * @property fullscreenToggleKey optional, a key that will enable fullscreen on press.
+ * @property quitKey optional, a key that will close the game on press.
+ * @property backgroundColor the color to clear the screen on every
+ * @property camera optional, the camera to draw the screen with
+ */
 class Window(
     val title: String,
     val initialSize: Vector2,
@@ -28,6 +42,10 @@ class Window(
         rl.SetTargetFPS(targetFPS ?: 0)  // 0 target fps means unlimited
     }
 
+    /**
+     * Start the game process and opens the window.
+     * @param onTick a function that gets called every tick, [displayFPS] times per second.
+     */
     fun run(onTick: (deltaTime: Float, window: Window) -> Unit) {
         // main loop
         while (!rl.WindowShouldClose()) {

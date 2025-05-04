@@ -10,7 +10,7 @@ class FloorBackground(
 
     override fun load() {
         for (i in (0..bunnyCount)) {
-            sprites.add(Sprite("resources/bunny.png", position = Vector2(
+            sprites.add(Sprite("resources/pictures/bunny.png", position = Vector2(
                 (-GameManager.gameSize.x.toInt() * 4 .. GameManager.gameSize.x.toInt() * 8).random(),
                 (-GameManager.gameSize.y.toInt() * 4 .. GameManager.gameSize.y.toInt()* 8).random()
             ),
