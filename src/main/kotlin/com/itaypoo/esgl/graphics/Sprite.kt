@@ -1,5 +1,6 @@
-package com.itaypoo.esgl
+package com.itaypoo.esgl.graphics
 
+import com.itaypoo.esgl.core.*
 import com.raylib.Raylib
 import kotlin.math.abs
 import kotlin.math.cos
@@ -12,13 +13,18 @@ class Sprite(
     val scale: Vector2 = Vector2(1, 1),
     var rotation: Float = 0f,
     var tint: Color = Color.WHITE,
-    var pivotPoint: Vector2 = Vector2(0, 0),
+    var pivotPoint: Vector2 = Vector2(0.5f, 0.5f),
     var pivotMode: PivotMode = PivotMode.NORMALIZED,
     var flipX: Boolean = false,
     var flipY: Boolean = false,
 ) : Drawable {
 
     private lateinit var texture: Raylib.Texture
+    val textureSize: Vector2 = Vector2(0, 0)
+        get() {
+            field.set(texture.width(), texture.height())
+            return field
+        }
     private var isTextureLoaded = false
 
     private val textureBoundsRect = Raylib.Rectangle()
@@ -28,10 +34,6 @@ class Sprite(
 
     var isInCamera: Boolean = true
         private set
-
-    enum class PivotMode {
-        NORMALIZED, PIXELS
-    }
 
     override fun load() {
         isTextureLoaded = true

@@ -1,4 +1,4 @@
-package com.itaypoo.esgl
+package com.itaypoo.esgl.graphics
 
 import com.raylib.Raylib
 

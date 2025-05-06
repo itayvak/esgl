@@ -1,5 +1,8 @@
-package com.itaypoo.esgl
+package com.itaypoo.esgl.graphics
 
+import com.itaypoo.esgl.core.Color
+import com.itaypoo.esgl.core.Vector2
+import com.itaypoo.esgl.core.Window
 import com.raylib.Raylib
 
 class TextDisplay(

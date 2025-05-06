@@ -1,5 +1,6 @@
-package com.itaypoo.esgl
+package com.itaypoo.esgl.input
 
+import com.itaypoo.esgl.core.Vector2
 import com.raylib.Raylib
 
 /**

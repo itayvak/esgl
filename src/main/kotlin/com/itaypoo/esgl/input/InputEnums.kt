@@ -1,4 +1,4 @@
-package com.itaypoo.esgl
+package com.itaypoo.esgl.input
 
 enum class Key(val code: Int) {
     APOSTROPHE(39),

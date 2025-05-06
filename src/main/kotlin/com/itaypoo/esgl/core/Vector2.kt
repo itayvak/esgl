@@ -1,4 +1,4 @@
-package com.itaypoo.esgl
+package com.itaypoo.esgl.core
 
 import com.raylib.Raylib
 import kotlin.math.sqrt

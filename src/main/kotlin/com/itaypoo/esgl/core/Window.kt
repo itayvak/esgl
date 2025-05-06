@@ -1,4 +1,6 @@
-package com.itaypoo.esgl
+package com.itaypoo.esgl.core
+import com.itaypoo.esgl.input.Input
+import com.itaypoo.esgl.input.Key
 import com.raylib.Raylib as rl
 
 /**
